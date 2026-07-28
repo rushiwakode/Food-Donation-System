@@ -1,0 +1,288 @@
+{
+  "info": {
+    "name": "Food Donation Management System API",
+    "description": "Complete API collection for the Food Donation Management System backend.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080/api" },
+    { "key": "accessToken", "value": "" },
+    { "key": "refreshToken", "value": "" },
+    { "key": "donationId", "value": "1" },
+    { "key": "claimId", "value": "1" },
+    { "key": "deliveryId", "value": "1" },
+    { "key": "userId", "value": "1" }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{accessToken}}", "type": "string" }]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register (Donor)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Jane Doe\",\n  \"email\": \"jane.donor@example.com\",\n  \"password\": \"Passw0rd!\",\n  \"phone\": \"9876543210\",\n  \"role\": \"DONOR\",\n  \"city\": \"Pune\",\n  \"state\": \"Maharashtra\",\n  \"donorType\": \"INDIVIDUAL\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Register (NGO)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"NGO Admin\",\n  \"email\": \"ngo.admin@example.com\",\n  \"password\": \"Passw0rd!\",\n  \"phone\": \"9123456789\",\n  \"role\": \"NGO\",\n  \"city\": \"Pune\",\n  \"organizationName\": \"Helping Hands\",\n  \"registrationNumber\": \"NGO/2024/001\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@fooddonation.com\",\n  \"password\": \"Admin@123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/refresh-token",
+            "body": { "mode": "raw", "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}" }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": { "method": "POST", "url": "{{baseUrl}}/auth/logout" }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/forgot-password",
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"jane.donor@example.com\"\n}" }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/reset-password",
+            "body": { "mode": "raw", "raw": "{\n  \"token\": \"REPLACE_WITH_TOKEN\",\n  \"newPassword\": \"NewPassw0rd!\"\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        { "name": "Get Current User", "request": { "method": "GET", "url": "{{baseUrl}}/users/me" } },
+        { "name": "Get User By ID", "request": { "method": "GET", "url": "{{baseUrl}}/users/{{userId}}" } },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/users/me/change-password",
+            "body": { "mode": "raw", "raw": "{\n  \"oldPassword\": \"Passw0rd!\",\n  \"newPassword\": \"NewPassw0rd!\"\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Donations",
+      "item": [
+        {
+          "name": "Create Donation",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/donations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Veg Thali Trays\",\n  \"description\": \"40 servings, freshly prepared\",\n  \"foodType\": \"VEG\",\n  \"quantity\": 40,\n  \"quantityUnit\": \"SERVINGS\",\n  \"categoryId\": 1,\n  \"preparedAt\": \"2026-06-20T10:00:00\",\n  \"expiresAt\": \"2026-06-20T22:00:00\",\n  \"pickupAddress\": \"MG Road, Camp Area\",\n  \"pickupCity\": \"Pune\",\n  \"pickupState\": \"Maharashtra\",\n  \"pickupPincode\": \"411001\"\n}"
+            }
+          }
+        },
+        { "name": "Get Donation By ID", "request": { "method": "GET", "url": "{{baseUrl}}/donations/{{donationId}}" } },
+        {
+          "name": "Update Donation",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/donations/{{donationId}}",
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Updated Title\",\n  \"foodType\": \"VEG\",\n  \"quantity\": 35,\n  \"categoryId\": 1,\n  \"preparedAt\": \"2026-06-20T10:00:00\",\n  \"expiresAt\": \"2026-06-20T22:00:00\",\n  \"pickupAddress\": \"MG Road\",\n  \"pickupCity\": \"Pune\"\n}" }
+          }
+        },
+        { "name": "Delete Donation", "request": { "method": "DELETE", "url": "{{baseUrl}}/donations/{{donationId}}" } },
+        { "name": "My Donations", "request": { "method": "GET", "url": "{{baseUrl}}/donations/my-donations?page=0&size=10" } },
+        { "name": "Search Donations (Public)", "request": { "method": "GET", "url": "{{baseUrl}}/donations/search?query=&page=0&size=10" } }
+      ]
+    },
+    {
+      "name": "NGO",
+      "item": [
+        {
+          "name": "Claim Donation",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/ngo/claims",
+            "body": { "mode": "raw", "raw": "{\n  \"donationId\": {{donationId}},\n  \"claimMessage\": \"We can pick up by 6 PM\",\n  \"peopleCount\": 40\n}" }
+          }
+        },
+        { "name": "Cancel Claim", "request": { "method": "DELETE", "url": "{{baseUrl}}/ngo/claims/{{claimId}}" } },
+        { "name": "Get Claim", "request": { "method": "GET", "url": "{{baseUrl}}/ngo/claims/{{claimId}}" } },
+        { "name": "My Claims", "request": { "method": "GET", "url": "{{baseUrl}}/ngo/claims/my-claims?page=0&size=10" } }
+      ]
+    },
+    {
+      "name": "Delivery",
+      "item": [
+        { "name": "Get Delivery", "request": { "method": "GET", "url": "{{baseUrl}}/delivery/{{deliveryId}}" } },
+        {
+          "name": "Update Status",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/delivery/{{deliveryId}}/status",
+            "body": { "mode": "raw", "raw": "{\n  \"status\": \"PICKUP_STARTED\"\n}" }
+          }
+        },
+        {
+          "name": "Confirm Pickup",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/delivery/{{deliveryId}}/confirm-pickup",
+            "body": { "mode": "raw", "raw": "{\n  \"otp\": \"123456\"\n}" }
+          }
+        },
+        {
+          "name": "Confirm Delivery",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/delivery/{{deliveryId}}/confirm-delivery",
+            "body": { "mode": "raw", "raw": "{\n  \"otp\": \"654321\"\n}" }
+          }
+        },
+        { "name": "My Deliveries", "request": { "method": "GET", "url": "{{baseUrl}}/delivery/my-deliveries?page=0&size=10" } }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        { "name": "Dashboard Stats", "request": { "method": "GET", "url": "{{baseUrl}}/admin/dashboard" } },
+        { "name": "All Users", "request": { "method": "GET", "url": "{{baseUrl}}/admin/users?page=0&size=10" } },
+        {
+          "name": "Update User Status",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/admin/users/{{userId}}/status",
+            "body": { "mode": "raw", "raw": "{\n  \"status\": \"ACTIVE\"\n}" }
+          }
+        },
+        { "name": "Approve NGO", "request": { "method": "PUT", "url": "{{baseUrl}}/admin/users/{{userId}}/approve-ngo" } },
+        { "name": "Approve Donor", "request": { "method": "PUT", "url": "{{baseUrl}}/admin/users/{{userId}}/approve-donor" } },
+        { "name": "Delete User", "request": { "method": "DELETE", "url": "{{baseUrl}}/admin/users/{{userId}}" } },
+        { "name": "All Donations", "request": { "method": "GET", "url": "{{baseUrl}}/admin/donations?page=0&size=10" } },
+        { "name": "Approve Donation", "request": { "method": "PUT", "url": "{{baseUrl}}/admin/donations/{{donationId}}/approve" } },
+        {
+          "name": "Reject Donation",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/admin/donations/{{donationId}}/reject",
+            "body": { "mode": "raw", "raw": "{\n  \"reason\": \"Incomplete details\"\n}" }
+          }
+        },
+        { "name": "All Claims", "request": { "method": "GET", "url": "{{baseUrl}}/admin/claims?page=0&size=10" } },
+        { "name": "Approve Claim", "request": { "method": "PUT", "url": "{{baseUrl}}/admin/claims/{{claimId}}/approve" } },
+        {
+          "name": "Reject Claim",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/admin/claims/{{claimId}}/reject",
+            "body": { "mode": "raw", "raw": "{\n  \"reason\": \"Duplicate claim\"\n}" }
+          }
+        },
+        { "name": "All Deliveries", "request": { "method": "GET", "url": "{{baseUrl}}/admin/deliveries?page=0&size=10" } },
+        {
+          "name": "Assign Agent",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/admin/deliveries/claims/{{claimId}}/assign",
+            "body": { "mode": "raw", "raw": "{\n  \"agentId\": 1\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        { "name": "Donor Dashboard", "request": { "method": "GET", "url": "{{baseUrl}}/dashboard/donor" } },
+        { "name": "NGO Dashboard", "request": { "method": "GET", "url": "{{baseUrl}}/dashboard/ngo" } },
+        { "name": "Agent Dashboard", "request": { "method": "GET", "url": "{{baseUrl}}/dashboard/agent" } }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        { "name": "My Notifications", "request": { "method": "GET", "url": "{{baseUrl}}/notifications?page=0&size=20" } },
+        { "name": "Unread Count", "request": { "method": "GET", "url": "{{baseUrl}}/notifications/unread-count" } },
+        { "name": "Mark Read", "request": { "method": "PUT", "url": "{{baseUrl}}/notifications/1/read" } },
+        { "name": "Mark All Read", "request": { "method": "PUT", "url": "{{baseUrl}}/notifications/read-all" } }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        { "name": "Get All Categories", "request": { "method": "GET", "url": "{{baseUrl}}/categories" } },
+        {
+          "name": "Create Category (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/categories/admin",
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Frozen Foods\",\n  \"description\": \"Frozen meals and ingredients\"\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contact",
+      "item": [
+        {
+          "name": "Submit Contact Message",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/public/contact",
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"John Smith\",\n  \"email\": \"john@example.com\",\n  \"subject\": \"Partnership Inquiry\",\n  \"message\": \"We'd like to partner with you.\"\n}" }
+          }
+        }
+      ]
+    }
+  ]
+}
