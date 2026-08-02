@@ -8,7 +8,7 @@ import DashboardLayout from './components/layout/DashboardLayout';
 import ProtectedRoute  from './routes/ProtectedRoute';
 
 // Public pages
-import LandingPage        from './pages/public/LandingPage';
+import LandingPage         from './pages/public/LandingPage';
 import BrowseDonationsPage from './pages/public/BrowseDonationsPage';
 import DonationDetailPage  from './pages/public/DonationDetailPage';
 import AboutPage           from './pages/public/AboutPage';
@@ -23,7 +23,7 @@ import RegisterPage       from './pages/auth/RegisterPage';
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
 import ResetPasswordPage  from './pages/auth/ResetPasswordPage';
 
-// Shared pages (reused by multiple roles)
+// Shared pages
 import NotificationsPage from './pages/shared/NotificationsPage';
 import ProfilePage       from './pages/shared/ProfilePage';
 
@@ -44,15 +44,16 @@ import DeliveryDetailPage  from './pages/agent/DeliveryDetailPage';
 import DeliveryHistoryPage from './pages/agent/DeliveryHistoryPage';
 
 // Admin pages
-import AdminDashboardPage   from './pages/admin/AdminDashboardPage';
-import AdminUsersPage       from './pages/admin/AdminUsersPage';
-import AdminDonationsPage   from './pages/admin/AdminDonationsPage';
-import AdminClaimsPage      from './pages/admin/AdminClaimsPage';
-import AdminDeliveriesPage  from './pages/admin/AdminDeliveriesPage';
-import AdminCategoriesPage  from './pages/admin/AdminCategoriesPage';
-import AdminReportsPage     from './pages/admin/AdminReportsPage';
-import AdminMessagesPage    from './pages/admin/AdminMessagesPage';
-import AdminNotificationsPage from './pages/admin/AdminNotificationsPage';
+import AdminDashboardPage       from './pages/admin/AdminDashboardPage';
+import AdminUsersPage           from './pages/admin/AdminUsersPage';
+import AdminDonationsPage       from './pages/admin/AdminDonationsPage';
+import AdminClaimsPage          from './pages/admin/AdminClaimsPage';
+import AdminDeliveriesPage      from './pages/admin/AdminDeliveriesPage';
+import AdminCategoriesPage      from './pages/admin/AdminCategoriesPage';
+import AdminReportsPage         from './pages/admin/AdminReportsPage';
+import AdminMessagesPage        from './pages/admin/AdminMessagesPage';
+import AdminNotificationsPage   from './pages/admin/AdminNotificationsPage';
+import AdminProfileRequestsPage from './pages/admin/AdminProfileRequestsPage';
 
 function App() {
   return (
@@ -61,12 +62,12 @@ function App() {
 
         {/* ── PUBLIC ─────────────────────────────────────────── */}
         <Route element={<PublicLayout />}>
-          <Route path="/"          element={<LandingPage />} />
-          <Route path="/browse"    element={<BrowseDonationsPage />} />
+          <Route path="/"           element={<LandingPage />} />
+          <Route path="/browse"     element={<BrowseDonationsPage />} />
           <Route path="/browse/:id" element={<DonationDetailPage />} />
-          <Route path="/about"     element={<AboutPage />} />
-          <Route path="/faq"       element={<FAQPage />} />
-          <Route path="/contact"   element={<ContactPage />} />
+          <Route path="/about"      element={<AboutPage />} />
+          <Route path="/faq"        element={<FAQPage />} />
+          <Route path="/contact"    element={<ContactPage />} />
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
         </Route>
 
@@ -79,60 +80,54 @@ function App() {
         {/* ── DONOR ──────────────────────────────────────────── */}
         <Route element={<ProtectedRoute allowedRoles={['DONOR']} />}>
           <Route element={<DashboardLayout />}>
-            <Route path="/donor/dashboard"           element={<DonorDashboardPage />} />
-            <Route path="/donor/donations"           element={<MyDonationsPage />} />
-            <Route path="/donor/donations/new"       element={<AddEditDonationPage />} />
-            <Route path="/donor/donations/:id/edit"  element={<AddEditDonationPage />} />
-            {/* ✅ Donor Notifications — bell icon navigates here */}
-            <Route path="/donor/notifications"       element={<NotificationsPage />} />
-            {/* ✅ Donor Profile — avatar dropdown navigates here */}
-            <Route path="/donor/profile"             element={<ProfilePage />} />
+            <Route path="/donor/dashboard"          element={<DonorDashboardPage />} />
+            <Route path="/donor/donations"          element={<MyDonationsPage />} />
+            <Route path="/donor/donations/new"      element={<AddEditDonationPage />} />
+            <Route path="/donor/donations/:id/edit" element={<AddEditDonationPage />} />
+            <Route path="/donor/notifications"      element={<NotificationsPage />} />
+            <Route path="/donor/profile"            element={<ProfilePage />} />
           </Route>
         </Route>
 
         {/* ── NGO ────────────────────────────────────────────── */}
         <Route element={<ProtectedRoute allowedRoles={['NGO']} />}>
           <Route element={<DashboardLayout />}>
-            <Route path="/ngo/dashboard"   element={<NgoDashboardPage />} />
-            <Route path="/ngo/browse"      element={<NgoBrowsePage />} />
-            <Route path="/ngo/donations/:id" element={<DonationDetailPage />} />
-            <Route path="/ngo/claims"      element={<MyClaimsPage />} />
-            {/* ✅ NGO Notifications */}
-            <Route path="/ngo/notifications" element={<NotificationsPage />} />
-            {/* ✅ NGO Profile */}
-            <Route path="/ngo/profile"     element={<ProfilePage />} />
+            <Route path="/ngo/dashboard"      element={<NgoDashboardPage />} />
+            <Route path="/ngo/browse"         element={<NgoBrowsePage />} />
+            <Route path="/ngo/donations/:id"  element={<DonationDetailPage />} />
+            <Route path="/ngo/claims"         element={<MyClaimsPage />} />
+            <Route path="/ngo/notifications"  element={<NotificationsPage />} />
+            <Route path="/ngo/profile"        element={<ProfilePage />} />
           </Route>
         </Route>
 
         {/* ── DELIVERY AGENT ─────────────────────────────────── */}
         <Route element={<ProtectedRoute allowedRoles={['DELIVERY_AGENT']} />}>
           <Route element={<DashboardLayout />}>
-            <Route path="/agent/dashboard"        element={<AgentDashboardPage />} />
-            <Route path="/agent/deliveries"       element={<AssignedPickupsPage />} />
-            <Route path="/agent/deliveries/:id"   element={<DeliveryDetailPage />} />
-            <Route path="/agent/history"          element={<DeliveryHistoryPage />} />
-            {/* ✅ Agent Notifications */}
-            <Route path="/agent/notifications"    element={<NotificationsPage />} />
-            {/* ✅ Agent Profile */}
-            <Route path="/agent/profile"          element={<ProfilePage />} />
+            <Route path="/agent/dashboard"      element={<AgentDashboardPage />} />
+            <Route path="/agent/deliveries"     element={<AssignedPickupsPage />} />
+            <Route path="/agent/deliveries/:id" element={<DeliveryDetailPage />} />
+            <Route path="/agent/history"        element={<DeliveryHistoryPage />} />
+            <Route path="/agent/notifications"  element={<NotificationsPage />} />
+            <Route path="/agent/profile"        element={<ProfilePage />} />
           </Route>
         </Route>
 
         {/* ── ADMIN ──────────────────────────────────────────── */}
         <Route element={<ProtectedRoute allowedRoles={['ADMIN']} />}>
           <Route element={<DashboardLayout />}>
-            <Route path="/admin/dashboard"    element={<AdminDashboardPage />} />
-            <Route path="/admin/users"        element={<AdminUsersPage />} />
-            <Route path="/admin/donations"    element={<AdminDonationsPage />} />
-            <Route path="/admin/claims"       element={<AdminClaimsPage />} />
-            <Route path="/admin/deliveries"   element={<AdminDeliveriesPage />} />
-            <Route path="/admin/categories"   element={<AdminCategoriesPage />} />
-            <Route path="/admin/reports"      element={<AdminReportsPage />} />
-            <Route path="/admin/messages"     element={<AdminMessagesPage />} />
-            {/* ✅ Admin Notifications — THIS was missing, causing the 404 */}
-            <Route path="/admin/notifications" element={<AdminNotificationsPage />} />
-            {/* ✅ Admin Profile */}
-            <Route path="/admin/profile"      element={<ProfilePage />} />
+            <Route path="/admin/dashboard"         element={<AdminDashboardPage />} />
+            <Route path="/admin/users"             element={<AdminUsersPage />} />
+            <Route path="/admin/donations"         element={<AdminDonationsPage />} />
+            <Route path="/admin/claims"            element={<AdminClaimsPage />} />
+            <Route path="/admin/deliveries"        element={<AdminDeliveriesPage />} />
+            <Route path="/admin/categories"        element={<AdminCategoriesPage />} />
+            <Route path="/admin/reports"           element={<AdminReportsPage />} />
+            <Route path="/admin/messages"          element={<AdminMessagesPage />} />
+            <Route path="/admin/notifications"     element={<AdminNotificationsPage />} />
+            {/* ✅ NEW — Profile change requests page */}
+            <Route path="/admin/profile-requests"  element={<AdminProfileRequestsPage />} />
+            <Route path="/admin/profile"           element={<ProfilePage />} />
           </Route>
         </Route>
 
