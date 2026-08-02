@@ -8,6 +8,7 @@ target/
 *.class
 
 ### STS ###
+.metadata/
 .apt_generated
 .classpath
 .factorypath
